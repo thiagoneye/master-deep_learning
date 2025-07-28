@@ -2,7 +2,7 @@
 
 This directory contains all the files, assignments, and projects completed as part of my Deep Learning course during my Master's program. It serves as a comprehensive record of the concepts learned and practical applications developed throughout the course.
 
---- 
+-----
 
 ## Contents
 
@@ -13,7 +13,7 @@ Within this folder, you'll find a variety of materials, likely organized into su
 * **Datasets**: Smaller datasets used for specific exercises or links/instructions on how to download larger ones.
 * **Reports/Documentation**: Any written reports, analyses, or detailed explanations accompanying the code.
 
---- 
+-----
 
 ## Key Topics Covered
 
@@ -28,13 +28,13 @@ The coursework in this directory generally covers fundamental and advanced topic
 * **Regularization Techniques**: Dropout, L1/L2 regularization.
 * **Frameworks**: Practical application using popular deep learning frameworks (e.g., TensorFlow, Keras, PyTorch).
 
---- 
+-----
 
 ## How to Navigate
 
 To explore the content, simply browse the subdirectories. Each major assignment or project should have its own dedicated folder. Look for .ipynb files for executable code and explanations, and any accompanying README.md files within subfolders for specific instructions or context.
 
---- 
+-----
 
 ## Dependencies
 
@@ -51,6 +51,6 @@ The specific dependencies will vary depending on the project. However, common li
 
 You can usually install these using pip:
 
-```
-pip install tensorflow torch keras numpy pandas matplotlib scikit-learn jupyter
+```bash
+pip install tensorflow torch keras numpy pandas matplotlib scikit-learn
 ```
