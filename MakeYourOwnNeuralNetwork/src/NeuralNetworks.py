@@ -7,12 +7,16 @@ import numpy as np
 
 class NeuralNetwork:
     def __init__(
-        self, neurons_per_layer: np.array, learning_rate=0.9, activation_function="relu"
+        self,
+        neurons_per_layer: np.array,
+        activation_function="relu",
+        learning_rate=0.01,
     ):
         self.neurons_per_layer = neurons_per_layer
         self.learning_rate = learning_rate
         self.f = None  # Activation Funcion
         self.df = None  # Derivative Activation Function
+        self.weights = None
 
         self._activation_function_validation(activation_function)
         self._initializes_the_activation_function(activation_function)
@@ -22,23 +26,30 @@ class NeuralNetwork:
         self._signal_validation(X)
 
         signal = X.copy()
+        self._signals = list()
+
         for weight in self.weights:
             signal = np.dot(weight, signal)
             signal = self.f(signal)
+            self._signals.append(signal)
 
         return signal
 
-    def train(self, X, y):
+    def train(self, X, y): #TODO Estou desenvolvendo essa função, está dando um trabalhinho kkkkk
         self._signal_validation(y)
 
         output_signal = self.query(X)
         error = y - output_signal
 
         # Backpropagation
+        for idx in range(len(self.weights) - 1, -1, -1):
+            signal = self._signals[idx]
+            self.weights[idx] -= self.learning_rate * np.dot(
+                (error * self.df(signal)), np.transpose(signal)
+            )
 
-    def predict(self, X_pred):
-        y_pred = None
-        return y_pred
+    def predict(self):
+        pass
 
     def _activation_function_validation(self, activation_function):
         allowed_values = ["relu", "sigmoid", "tanh", "leaky", "elu", "swish"]
@@ -97,3 +108,20 @@ class NeuralNetwork:
 
         elif np.any(np.isnan(vector)) or np.any(np.isinf(vector)):
             raise ValueError("Input contains NaN or Inf.")
+
+    def _loss_function_validation(self, loss_function):
+        allowed_values = ["mse", "mae"]
+
+        if not isinstance(loss_function, str):
+            raise TypeError(f"The Loss Function must be of type {str}.")
+        elif loss_function not in allowed_values:
+            raise ValueError(f"The Loss Function must be one of {allowed_values}.")
+
+    def _initializes_the_loss_function(self, loss_function):
+        if loss_function == "mse":
+            self.J = lambda target, output: np.sum((target - output) ** 2) / len(target)
+
+        elif loss_function == "mae":
+            self.J = lambda target, output: np.sum(np.abs(target - output)) / len(
+                target
+            )
