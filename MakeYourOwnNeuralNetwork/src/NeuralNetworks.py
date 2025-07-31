@@ -7,11 +7,8 @@ import numpy as np
 
 class NeuralNetwork:
     def __init__(
-        self, neurons_per_layer, learning_rate=0.9, activation_function="relu"
+        self, neurons_per_layer: np.array, learning_rate=0.9, activation_function="relu"
     ):
-        """
-        Initialize the neural network.
-        """
         self.neurons_per_layer = neurons_per_layer
         self.learning_rate = learning_rate
         self.f = None  # Activation Funcion
@@ -20,6 +17,28 @@ class NeuralNetwork:
         self._activation_function_validation(activation_function)
         self._initializes_the_activation_function(activation_function)
         self._initialize_weight_matrix()
+
+    def query(self, X):
+        self._signal_validation(X)
+
+        signal = X.copy()
+        for weight in self.weights:
+            signal = np.dot(weight, signal)
+            signal = self.f(signal)
+
+        return signal
+
+    def train(self, X, y):
+        self._signal_validation(y)
+
+        output_signal = self.query(X)
+        error = y - output_signal
+
+        # Backpropagation
+
+    def predict(self, X_pred):
+        y_pred = None
+        return y_pred
 
     def _activation_function_validation(self, activation_function):
         allowed_values = ["relu", "sigmoid", "tanh", "leaky", "elu", "swish"]
@@ -69,11 +88,12 @@ class NeuralNetwork:
             np.random.rand(*size) * 2 - 1 for size in structure_of_the_weight_matrix
         ]
 
-    def fit(self, X, y):
-        X = X.copy()
-        for weight in self.weights:
-            X = np.dot(weight, X)
-            X = self.f(X)
+    def _signal_validation(self, vector):
+        if not isinstance(vector, np.ndarray):
+            raise TypeError(f"The Input must be a NumPy array {np.ndarray}.")
 
-    def predict(self):
-        pass
+        elif vector.ndim != 2:
+            raise ValueError(f"The Input must be a 2D array.")
+
+        elif np.any(np.isnan(vector)) or np.any(np.isinf(vector)):
+            raise ValueError("Input contains NaN or Inf.")
