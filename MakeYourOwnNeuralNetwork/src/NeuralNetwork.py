@@ -5,7 +5,7 @@ import numpy as np
 # Neural Network Class Definition
 
 
-class NeuralNetwork:
+class MLP:
     def __init__(
         self,
         neurons_per_layer: np.array,
