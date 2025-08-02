@@ -17,6 +17,7 @@ class MLP:
         self.f = None  # Activation Funcion
         self.df = None  # Derivative Activation Function
         self.weights = None
+        # TODO Criar o bias
 
         self._activation_function_validation(activation_function)
         self._initializes_the_activation_function(activation_function)
@@ -25,28 +26,40 @@ class MLP:
     def query(self, X):
         self._signal_validation(X)
 
-        signal = X.copy()
-        self._signals = list()
+        input_signal = X.copy()
+        pre_activations_signals = []
+        output_signals = []
 
         for weight in self.weights:
-            signal = np.dot(weight, signal)
-            signal = self.f(signal)
-            self._signals.append(signal)
+            z_signal = np.dot(weight, input_signal)
+            input_signal = self.f(z_signal)
+            pre_activations_signals.append(z_signal)
+            output_signals.append(input_signal)
 
-        return signal
+        return pre_activations_signals, output_signals
 
-    def train(self, X, y): #TODO Estou desenvolvendo essa função, está dando um trabalhinho kkkkk
+    def train(self, X, y):
         self._signal_validation(y)
 
-        output_signal = self.query(X)
-        error = y - output_signal
+        num_layers = len(self.weights)
+        pre_activations_signals, output_signals = self.query(X)
+        error = y - output_signals[-1]
 
         # Backpropagation
-        for idx in range(len(self.weights) - 1, -1, -1):
-            signal = self._signals[idx]
-            self.weights[idx] -= self.learning_rate * np.dot(
-                (error * self.df(signal)), np.transpose(signal)
-            )
+        for layer_idx in reversed(range(num_layers)):
+            z_signal = pre_activations_signals[layer_idx]
+            input_signal = X if layer_idx == 0 else output_signals[layer_idx - 1]
+
+            df = self.df(z_signal)
+            dL = np.dot(
+                (error * df), input_signal
+            )  # Partial derivative (gradient) of the loss function with respect to the weights
+
+            self.weights[layer_idx] -= (
+                self.learning_rate * dL
+            )  # TODO Verificar durante os testes se o sinal irá afetar os resultados
+
+            error = np.dot(self.weights[layer_idx].T, error)
 
     def predict(self):
         pass
