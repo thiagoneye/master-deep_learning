@@ -62,12 +62,12 @@ class MLP:
     def predict(self, X):
         self._input_validation(X)
 
-        activation = X
+        signal = X
         for w, b in zip(self.weights, self.biases):
-            z = np.dot(w, activation) + b
-            activation = self.f(z)
+            z = np.dot(w, signal) + b
+            signal = self.f(z)
 
-        return activation
+        return signal
 
     def _activation_function_validation(self):
         allowed_values = ["relu", "sigmoid", "tanh", "leaky", "elu", "swish"]
