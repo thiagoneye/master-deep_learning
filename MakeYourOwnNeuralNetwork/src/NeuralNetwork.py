@@ -8,7 +8,7 @@ import numpy as np
 class MLP:
     def __init__(
         self,
-        neurons_per_layer: np.array,
+        neurons_per_layer: list,
         activation_function="relu",
         learning_rate=0.01,
     ):
@@ -17,52 +17,58 @@ class MLP:
         self.f = None  # Activation Funcion
         self.df = None  # Derivative Activation Function
         self.weights = None
-        # TODO Criar o bias
+        self.biases = None
 
         self._activation_function_validation(activation_function)
         self._initializes_the_activation_function(activation_function)
-        self._initialize_weight_matrix()
+        self._initialize_weights_and_biases()
 
     def query(self, X):
-        self._signal_validation(X)
+        self._input_validation(X)
 
-        input_signal = X.copy()
-        pre_activations_signals = []
-        output_signals = []
+        activation = X
+        for w, b in zip(self.weights, self.biases):
+            z = np.dot(w, activation) + b
+            activation = self.f(z)
 
-        for weight in self.weights:
-            z_signal = np.dot(weight, input_signal)
-            input_signal = self.f(z_signal)
-            pre_activations_signals.append(z_signal)
-            output_signals.append(input_signal)
-
-        return pre_activations_signals, output_signals
+        return activation
 
     def train(self, X, y):
-        self._signal_validation(y)
+        self._input_validation(X)
+        self._output_validation(y)
 
-        num_layers = len(self.weights)
-        pre_activations_signals, output_signals = self.query(X)
-        error = y - output_signals[-1]
+        num_samples = X.shape[1]
 
-        # Backpropagation
-        for layer_idx in reversed(range(num_layers)):
-            z_signal = pre_activations_signals[layer_idx]
-            input_signal = X if layer_idx == 0 else output_signals[layer_idx - 1]
+        # Forward Pass
+        activations = [X]
+        pre_activations = []
+        activation = X
+        for w, b in zip(self.weights, self.biases):
+            z = np.dot(w, activation) + b
+            activation = self.f(z)
+            pre_activations.append(z)
+            activations.append(activation)
 
-            df = self.df(z_signal)
-            dL = np.dot(
-                (error * df), input_signal
-            )  # Partial derivative (gradient) of the loss function with respect to the weights
+        # Backward Pass
+        delta = (activations[-1] - y) * self.df(pre_activations[-1])
+        db = [np.sum(delta, axis=1, keepdims=True) / num_samples]
+        dw = [np.dot(delta, activations[-2].T) / num_samples]
 
-            self.weights[layer_idx] -= (
-                self.learning_rate * dL
-            )  # TODO Verificar durante os testes se o sinal irá afetar os resultados
+        for l in range(2, len(self.neurons_per_layer)):
+            z = pre_activations[-l]
+            delta = np.dot(self.weights[-l + 1].T, delta) * self.df(z)
+            db.append(np.sum(delta, axis=1, keepdims=True) / num_samples)
+            dw.append(np.dot(delta, activations[-l - 1].T) / num_samples)
 
-            error = np.dot(self.weights[layer_idx].T, error)
+        db.reverse()
+        dw.reverse()
 
-    def predict(self):
-        pass
+        for i in range(len(self.weights)):
+            self.weights[i] -= self.learning_rate * dw[i]
+            self.biases[i] -= self.learning_rate * db[i]
+
+    def predict(self, X):
+        return self.query(X)
 
     def _activation_function_validation(self, activation_function):
         allowed_values = ["relu", "sigmoid", "tanh", "leaky", "elu", "swish"]
@@ -103,18 +109,22 @@ class MLP:
             self.f = lambda X: X * sigmoid(X)
             self.df = lambda X: sigmoid(X) * (1 + X * (1 - sigmoid(X)))
 
-    def _initialize_weight_matrix(self):
-        structure_of_the_weight_matrix = np.stack(
-            (self.neurons_per_layer[:-1], self.neurons_per_layer[1:]), axis=1
-        )
+    def _initialize_weights_and_biases(self):
+        self.weights = []
+        self.biases = []
 
-        self.weights = [
-            np.random.rand(*size) * 2 - 1 for size in structure_of_the_weight_matrix
-        ]
+        for n_in, n_out in zip(self.neurons_per_layer[:-1], self.neurons_per_layer[1:]):
+            self.weights.append(np.random.randn(n_out, n_in) * np.sqrt(2.0 / n_in))
+            self.biases.append(np.zeros((n_out, 1)))
 
-    def _signal_validation(self, vector):
+    def _input_validation(self, vector):
         if not isinstance(vector, np.ndarray):
             raise TypeError(f"The Input must be a NumPy array {np.ndarray}.")
+
+        elif vector.shape[0] != self.neurons_per_layer[0]:
+            raise ValueError(
+                f"Input shape {vector.shape} is incompatible with first layer size {self.neurons_per_layer[0]}."
+            )
 
         elif vector.ndim != 2:
             raise ValueError(f"The Input must be a 2D array.")
@@ -122,13 +132,12 @@ class MLP:
         elif np.any(np.isnan(vector)) or np.any(np.isinf(vector)):
             raise ValueError("Input contains NaN or Inf.")
 
-    def _loss_function_validation(self, loss_function):
-        allowed_values = ["mse", "mae"]
+    def _output_validation(self, vector):
+        if not isinstance(vector, np.ndarray):
+            raise TypeError(f"The Input must be a NumPy array {np.ndarray}.")
 
-        if not isinstance(loss_function, str):
-            raise TypeError(f"The Loss Function must be of type {str}.")
-        elif loss_function not in allowed_values:
-            raise ValueError(f"The Loss Function must be one of {allowed_values}.")
+        elif np.any(np.isnan(vector)) or np.any(np.isinf(vector)):
+            raise ValueError("Input contains NaN or Inf.")
 
     def _initializes_the_loss_function(self, loss_function):
         if loss_function == "mse":
