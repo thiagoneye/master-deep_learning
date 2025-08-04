@@ -38,13 +38,15 @@ class MLP:
         for w, b in zip(self.weights, self.biases):
             z = np.dot(w, activation) + b
             activation = self.f(z)
+
             pre_activations.append(z)
             activations.append(activation)
 
         # Backward Pass
-        delta = (activations[-1] - y) * self.df(pre_activations[-1])
-        db = [np.sum(delta, axis=1, keepdims=True) / num_samples]
-        dw = [np.dot(delta, activations[-2].T) / num_samples]
+        delta = (activations[-1] - y) * self.df(pre_activations[-1]) # Backpropagation
+
+        db = [np.sum(delta, axis=1, keepdims=True) / num_samples] # Derivative of the Bias
+        dw = [np.dot(delta, activations[-2].T) / num_samples] # Derivative of Weights
 
         for l in range(2, len(self.neurons_per_layer)):
             z = pre_activations[-l]

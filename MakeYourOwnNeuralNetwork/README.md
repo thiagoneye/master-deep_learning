@@ -17,17 +17,11 @@ This implementation is heavily inspired by and based on the principles described
 
 Within this folder, you'll find Python scripts (`.py`) and Jupyter Notebooks (`.ipynb`) that progressively build up the neural network. Key components you can expect to find include:
 
-  * **`neural_network.py`**: The core implementation of the neural network class, containing methods for:
+  * **`NeuralNetwork.py`**: The core implementation of the neural network class, containing methods for:
       * **Initialization**: Setting up layers, weights, and biases.
-      * **Forward Propagation**: Calculating outputs from inputs.
-      * **Backward Propagation (Backpropagation)**: Computing gradients for weight and bias updates.
       * **Training**: Iterating through data, performing forward and backward passes, and updating parameters.
       * **Prediction**: Using the trained model to make predictions on new data.
-  * **`layers.py`**: Definitions for different types of layers (e.g., dense/fully connected layers).
-  * **`activations.py`**: Implementations of various activation functions (e.g., sigmoid, ReLU, softmax).
-  * **`optimizers.py`**: Simple gradient descent optimizer.
-  * **`loss_functions.py`**: Implementation of loss functions (e.g., mean squared error, cross-entropy).
-  * **Example usage scripts**: Demonstrations of how to instantiate, train, and test the neural network on simple datasets.
+  * **Example.ipynb**: Demonstrations of how to instantiate, train, and test the neural network on simple datasets.
 
 -----
 
