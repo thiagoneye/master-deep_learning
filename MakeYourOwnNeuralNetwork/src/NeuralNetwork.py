@@ -14,24 +14,15 @@ class MLP:
     ):
         self.neurons_per_layer = neurons_per_layer
         self.learning_rate = learning_rate
+        self.activation_function = activation_function
         self.f = None  # Activation Funcion
         self.df = None  # Derivative Activation Function
         self.weights = None
         self.biases = None
 
-        self._activation_function_validation(activation_function)
-        self._initializes_the_activation_function(activation_function)
+        self._activation_function_validation()
+        self._initializes_the_activation_function()
         self._initialize_weights_and_biases()
-
-    def query(self, X):
-        self._input_validation(X)
-
-        activation = X
-        for w, b in zip(self.weights, self.biases):
-            z = np.dot(w, activation) + b
-            activation = self.f(z)
-
-        return activation
 
     def train(self, X, y):
         self._input_validation(X)
@@ -40,9 +31,10 @@ class MLP:
         num_samples = X.shape[1]
 
         # Forward Pass
+        activation = X
         activations = [X]
         pre_activations = []
-        activation = X
+
         for w, b in zip(self.weights, self.biases):
             z = np.dot(w, activation) + b
             activation = self.f(z)
@@ -68,43 +60,49 @@ class MLP:
             self.biases[i] -= self.learning_rate * db[i]
 
     def predict(self, X):
-        return self.query(X)
+        self._input_validation(X)
 
-    def _activation_function_validation(self, activation_function):
+        activation = X
+        for w, b in zip(self.weights, self.biases):
+            z = np.dot(w, activation) + b
+            activation = self.f(z)
+
+        return activation
+
+    def _activation_function_validation(self):
         allowed_values = ["relu", "sigmoid", "tanh", "leaky", "elu", "swish"]
 
-        if not isinstance(activation_function, str):
+        if not isinstance(self.activation_function, str):
             raise TypeError(f"The Activation Function must be of type {str}.")
-        elif activation_function not in allowed_values:
+        elif self.activation_function not in allowed_values:
             raise ValueError(
                 f"The Activation Function must be one of {allowed_values}."
             )
 
-    def _initializes_the_activation_function(self, activation_function):
-        if activation_function == "relu":
+    def _initializes_the_activation_function(self):
+        if self.activation_function == "relu":
             self.f = lambda X: np.maximum(0, X)
-            self.df = lambda X: np.where(X > 0, 1, 0)
+            self.df = lambda X: (X > 0).astype(float)
 
-        elif activation_function == "sigmoid":
+        elif self.activation_function == "sigmoid":
             self.f = lambda X: 1 / (1 + np.exp(-X))
             self.df = lambda X: self.f(X) * (1 - self.f(X))
 
-        elif activation_function == "tanh":
+        elif self.activation_function == "tanh":
             self.f = lambda X: np.tanh(X)
             self.df = lambda X: 1 - np.tanh(X) ** 2
 
-        elif activation_function == "leaky":
+        elif self.activation_function == "leaky":
             alpha = 0.01
             self.f = lambda X: np.where(X > 0, X, alpha * X)
             self.df = lambda X: np.where(X > 0, 1, alpha)
 
-        elif activation_function == "elu":
+        elif self.activation_function == "elu":
             alpha = 1.0
             self.f = lambda X: np.where(X > 0, X, alpha * (np.exp(X) - 1))
             self.df = lambda X: np.where(X > 0, 1, self.f(X) + alpha)
 
-        else:
-            # swish
+        elif self.activation_function == "swish":
             sigmoid = lambda X: 1 / (1 + np.exp(-X))
             self.f = lambda X: X * sigmoid(X)
             self.df = lambda X: sigmoid(X) * (1 + X * (1 - sigmoid(X)))
@@ -115,7 +113,10 @@ class MLP:
 
         for n_in, n_out in zip(self.neurons_per_layer[:-1], self.neurons_per_layer[1:]):
             self.weights.append(np.random.randn(n_out, n_in) * np.sqrt(2.0 / n_in))
-            self.biases.append(np.zeros((n_out, 1)))
+            if self.activation_function == "relu":
+                self.biases.append(np.zeros((n_out, 1)) + 0.01)
+            else:
+                self.biases.append(np.zeros((n_out, 1)))
 
     def _input_validation(self, vector):
         if not isinstance(vector, np.ndarray):
@@ -138,12 +139,3 @@ class MLP:
 
         elif np.any(np.isnan(vector)) or np.any(np.isinf(vector)):
             raise ValueError("Input contains NaN or Inf.")
-
-    def _initializes_the_loss_function(self, loss_function):
-        if loss_function == "mse":
-            self.J = lambda target, output: np.sum((target - output) ** 2) / len(target)
-
-        elif loss_function == "mae":
-            self.J = lambda target, output: np.sum(np.abs(target - output)) / len(
-                target
-            )
