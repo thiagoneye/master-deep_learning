@@ -2,8 +2,6 @@
 
 This repository showcases projects and implementations from my Master's degree, with a focus on Deep Learning concepts and a fundamental, from-scratch neural network implementation.
 
------
-
 ## Repository Structure
 
 * `DeepLearning/`
@@ -19,8 +17,6 @@ This directory features a neural network implementation built from scratch, mean
 
 This section offers a deep dive into the core mechanics of neural networks, providing a clear understanding of their underlying operations.
 
------
-
 ## Getting Started
 
 To access and explore the code, simply clone this repository to your local machine:
@@ -30,8 +26,6 @@ git clone git@github.com:thiagoneye/master-deep_learning.git
 ```
 
 Once cloned, navigate into the respective directories (`DeepLearning/` or `MakeYourOwnNeuralNetwork/`) to find the code and any specific instructions or dependencies within their individual README files.
-
------
 
 ## Technologies Used
 

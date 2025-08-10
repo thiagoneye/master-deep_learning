@@ -2,16 +2,12 @@
 
 This directory contains my implementation of a neural network built **entirely from scratch**, without relying on popular deep learning frameworks like TensorFlow, Keras, or PyTorch. The goal here is to deeply understand the fundamental mathematics and algorithms that power neural networks, by implementing each component step-by-step.
 
------
-
 ## Inspiration and References
 
 This implementation is heavily inspired by and based on the principles described in two excellent resources:
 
   * **"Make Your Own Neural Network" by Tariq Rashid (2016)**: This book provides a clear, step-by-step guide to building a simple neural network in Python, making complex concepts accessible.
   * **"Neural Networks from Scratch in Python" by Harrison Kinsley (2020)**: This resource offers a more comprehensive dive, covering various activation functions, optimizers, and layers, all implemented without external libraries beyond basic numerical computation.
-
------
 
 ## Contents
 
@@ -22,8 +18,6 @@ Within this folder, you'll find Python scripts (`.py`) and Jupyter Notebooks (`.
       * **Training**: Iterating through data, performing forward and backward passes, and updating parameters.
       * **Prediction**: Using the trained model to make predictions on new data.
   * **Example.ipynb**: Demonstrations of how to instantiate, train, and test the neural network on simple datasets.
-
------
 
 ## Getting Started
 
@@ -41,8 +35,6 @@ To explore this implementation, you'll primarily need Python and NumPy.
     ```bash
     pip install numpy pandas matplotlib
     ```
-
------
 
 ## Why Implement from Scratch?
 
