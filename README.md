@@ -13,7 +13,6 @@ This directory holds all files related to the Deep Learning course completed dur
 This directory features a neural network implementation built from scratch, meaning it doesn't rely on high-level frameworks like TensorFlow, Keras, or PyTorch. This foundational implementation is based on the principles outlined in two key resources:
 
     - "Make Your Own Neural Network" by Tariq Rashid (2016)
-    - "Neural Networks from Scratch in Python" by Harrison Kinsley (2020)
 
 This section offers a deep dive into the core mechanics of neural networks, providing a clear understanding of their underlying operations.
 
