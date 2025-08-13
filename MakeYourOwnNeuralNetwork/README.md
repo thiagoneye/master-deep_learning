@@ -4,10 +4,9 @@ This directory contains my implementation of a neural network built **entirely f
 
 ## Inspiration and References
 
-This implementation is heavily inspired by and based on the principles described in two excellent resources:
+This implementation is heavily inspired by and based on the principles described in one excellent resource:
 
   * **"Make Your Own Neural Network" by Tariq Rashid (2016)**: This book provides a clear, step-by-step guide to building a simple neural network in Python, making complex concepts accessible.
-  * **"Neural Networks from Scratch in Python" by Harrison Kinsley (2020)**: This resource offers a more comprehensive dive, covering various activation functions, optimizers, and layers, all implemented without external libraries beyond basic numerical computation.
 
 ## Contents
 
