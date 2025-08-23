@@ -8,6 +8,16 @@ This repository showcases projects and implementations from my Master's degree, 
 
 This directory holds all files related to the Deep Learning course completed during my Master's program. Here, you'll find assignments, project code, and relevant resources explored throughout the course.
 
+* `DeepLearningWithTensorFlow`
+
+This directory contains implementations and materials related to the DeepLearning With TensorFlow short course from Udemy.
+
+* `HandsOnMachineLearning`
+
+This directory contains implementations resulting from the study of the book:
+
+    - "Hands-On: Machine Learning with Scikit-Learning, Keras, and TensorFlow" by Aurélien Géron (2019)
+
 * `MakeYourOwnNeuralNetwork/`
 
 This directory features a neural network implementation built from scratch, meaning it doesn't rely on high-level frameworks like TensorFlow, Keras, or PyTorch. This foundational implementation is based on the principles outlined in one key resource:
@@ -24,7 +34,7 @@ To access and explore the code, simply clone this repository to your local machi
 git clone git@github.com:thiagoneye/master-deep_learning.git
 ```
 
-Once cloned, navigate into the respective directories (`DeepLearning/` or `MakeYourOwnNeuralNetwork/`) to find the code and any specific instructions or dependencies within their individual README files.
+Once cloned, navigate into the respective directories (`DeepLearning/`, `DeepLearningWithTensorFlow`, `HandsOnMachineLearning`, or `MakeYourOwnNeuralNetwork/`) to find the code and any specific instructions or dependencies within their individual README files.
 
 ## Technologies Used
 
@@ -34,3 +44,4 @@ While specific technologies and libraries may vary slightly by project, the prim
 * **NumPy**: Essential for numerical operations, especially in the `MakeYourOwnNeuralNetwork/` section.
 * **Pandas**: For data manipulation and analysis.
 * **Matplotlib**: For data visualization.
+* **Scikit-Learn**: For preprocessing and evaluation metrics.
