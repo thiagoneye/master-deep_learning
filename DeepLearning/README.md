@@ -21,7 +21,7 @@ The coursework in this directory generally covers fundamental and advanced topic
 
 * **Optimization Algorithms**: Dive into the methods that make neural networks learn efficiently, such as Stochastic Gradient Descent (SGD), Adam, and RMSprop, which help find the optimal set of weights to minimize loss.
 
-* **Regularization Techniques**: Understand how to prevent your models from overfitting—or memorizing the training data—using strategies like Dropout and L1/L2 regularization to improve generalization to new data.
+* **Regularization Techniques**: Understand how to prevent your models from overfitting, or memorizing the training data, using strategies like Dropout and L1/L2 regularization to improve generalization to new data.
 
 * **Frameworks**: Gain hands-on experience by applying these concepts using popular deep learning frameworks like TensorFlow and Keras, which simplify the process of building and training models.
 
@@ -35,7 +35,7 @@ The coursework in this directory generally covers fundamental and advanced topic
 
 * **Transformers**: This revolutionary architecture has become the new standard for sequential data, particularly in Natural Language Processing (NLP). Unlike RNNs, Transformers process entire sequences at once using a powerful self-attention mechanism, which allows them to capture the relationships between all elements in a sequence, regardless of their position. This parallel processing makes them far more scalable and efficient than LSTMs and GRUs for very large datasets.
 
-* **Generative Adversarial Networks (GANs)**: Learn the principles of these powerful generative models, which consist of two competing networks—a generator and a discriminator—that work together to create realistic new data.
+* **Generative Adversarial Networks (GANs)**: Learn the principles of these powerful generative models, which consist of two competing networks, a generator and a discriminator, that work together to create realistic new data.
 
 #### Advanced Topics & Applications
 
